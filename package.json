@@ -1,6 +1,7 @@
 {
   "name": "angular-starter",
   "private": true,
+  "homepage": "https://adrianrochacon10.github.io/ya-es-agosto",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
