@@ -1,7 +1,7 @@
 {
   "name": "angular-starter",
   "private": true,
-  "homepage": "https://adrianrochacon10.github.io/ya-es-agosto",
+  "homepage": "https://urielcont.github.io/angular-git/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
