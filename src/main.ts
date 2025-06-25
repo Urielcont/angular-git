@@ -7,443 +7,143 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="app-container" [class.august-mode]="isAugust">
-      <div class="content-wrapper">
-        
-        <!-- Modo No Agosto -->
-        <div *ngIf="!isAugust" class="no-august-content">
-          <div class="pulse-circle"></div>
-          <h1 class="main-title">Ya es agosto</h1>
-          <div class="status-container">
-            <div class="status-icon">❌</div>
-            <p class="status-text">NO ES AGOSTO XD</p>
-          </div>
-          <div class="date-info">
-            <p>Hoy es: <strong>{{ currentDate }}</strong></p>
-            <p>Mes actual: <strong>{{ currentMonth }}</strong></p>
-          </div>
-          <div class="checking-indicator">
-            <div class="spinner"></div>
-            <p>Comprobando cada segundo...</p>
-          </div>
-        </div>
+    <!-- No hay partido -->
+<div *ngIf="!isMatchDay" class="no-match-content">
+  <h1 class="main-title">Hoy no hay fútbol 😞</h1>
+  <p class="status-text">Relájate, entrena... ¡el partido viene pronto!</p>
+  <p class="date-info">Hoy es <strong>{{ currentDate }}</strong></p>
+</div>
 
-        <!-- Modo Agosto -->
-        <div *ngIf="isAugust" class="august-content">
-          <div class="celebration-header">
-            <h1 class="august-title">¡¡¡YA ES AGOSTO!!!</h1>
-            <div class="confetti"></div>
-          </div>
-          
-          <div class="nyan-container">
-            <div class="rainbow-trail"></div>
-            <img 
-              src="https://media.tenor.com/images/b2a8da5236dcee62b940ce5b6bf7c6ed/tenor.gif" 
-              alt="Nyan Cat" 
-              class="nyan-cat"
-              (error)="onImageError($event)"
-            />
-          </div>
-          
-          <div class="august-info">
-            <p class="success-text">🎉 ¡Por fin llegó agosto! 🎉</p>
-            <p class="date-text">{{ currentDate }}</p>
-          </div>
-          
-          <div class="party-elements">
-            <div class="star star-1">⭐</div>
-            <div class="star star-2">🌟</div>
-            <div class="star star-3">✨</div>
-            <div class="star star-4">💫</div>
-          </div>
-        </div>
-        
-      </div>
-    </div>
+<!-- Día de partido -->
+<div *ngIf="isMatchDay" class="matchday-content">
+  <h1 class="main-title">⚽ ¡Es día de partido! ⚽</h1>
+  <img src="https://media.tenor.com/Qyls2Ogp3j8AAAAC/gol-futbol.gif"
+       alt="Celebración de gol"
+       class="match-gif"
+       (error)="onImageError($event)" />
+  <p class="status-text">Prepara tu jersey, es {{ currentDay }} de fútbol.</p>
+</div>
+
   `,
   styles: [`
     .app-container {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      background-size: 400% 400%;
-      animation: gradientShift 8s ease infinite;
-      padding: 1rem;
-      overflow: hidden;
-      position: relative;
-    }
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #007f5f 0%, #2b9348 100%);
+  background-size: 400% 400%;
+  animation: fieldWave 10s ease infinite;
+  padding: 1rem;
+  color: white;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
 
-    .app-container.august-mode {
-      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #fecfef 50%, #ff9a9e 75%, #fecfef 100%);
-      background-size: 400% 400%;
-      animation: rainbowGradient 3s ease infinite;
-    }
+@keyframes fieldWave {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+.main-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
 
-    @keyframes rainbowGradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+.status-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
 
-    .content-wrapper {
-      text-align: center;
-      position: relative;
-      z-index: 10;
-      max-width: 600px;
-      width: 100%;
-    }
+.date-info {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
 
-    /* Modo No Agosto */
-    .no-august-content {
-      color: white;
-      position: relative;
-    }
+.match-gif {
+  width: 220px;
+  height: auto;
+  border-radius: 10px;
+  margin: 2rem auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  animation: goalPulse 1s ease-in-out infinite alternate;
+}
 
-    .pulse-circle {
-      position: absolute;
-      top: -50px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
+@keyframes goalPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
 
-    @keyframes pulse {
-      0% { transform: translateX(-50%) scale(1); opacity: 1; }
-      100% { transform: translateX(-50%) scale(2); opacity: 0; }
-    }
+.matchday-content {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
 
-    .main-title {
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      font-weight: 800;
-      margin: 2rem 0;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(45deg, #ffffff, #e0e0e0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+.no-match-content {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(3px);
+}
 
-    .status-container {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 2rem;
-      margin: 2rem 0;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: transform 0.3s ease;
-    }
+@media (max-width: 600px) {
+  .match-gif {
+    width: 160px;
+  }
+  .main-title {
+    font-size: 2rem;
+  }
+}
 
-    .status-container:hover {
-      transform: translateY(-5px);
-    }
-
-    .status-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-10px); }
-      60% { transform: translateY(-5px); }
-    }
-
-    .status-text {
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      font-weight: bold;
-      margin: 0;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    }
-
-    .date-info {
-      margin: 2rem 0;
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-
-    .date-info strong {
-      color: #ffeb3b;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    }
-
-    .checking-indicator {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-
-    .spinner {
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-top: 2px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Modo Agosto */
-    .august-content {
-      color: white;
-      position: relative;
-    }
-
-    .celebration-header {
-      position: relative;
-      margin-bottom: 3rem;
-    }
-
-    .august-title {
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      font-weight: 900;
-      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-      animation: celebrationPulse 0.8s ease-in-out infinite alternate;
-      background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      background-size: 400% 400%;
-      animation: textRainbow 2s ease infinite, celebrationPulse 0.8s ease-in-out infinite alternate;
-    }
-
-    @keyframes celebrationPulse {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.05); }
-    }
-
-    @keyframes textRainbow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .confetti {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 100px;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="2" fill="%23ff6b6b"/><circle cx="30" cy="20" r="2" fill="%2348dbfb"/><circle cx="50" cy="15" r="2" fill="%23feca57"/><circle cx="70" cy="25" r="2" fill="%23ff9ff3"/><circle cx="90" cy="10" r="2" fill="%2355a3ff"/></svg>') repeat;
-      animation: confettiFall 3s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes confettiFall {
-      0% { transform: translateY(-100px) rotate(0deg); }
-      100% { transform: translateY(100px) rotate(360deg); }
-    }
-
-    .nyan-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 3rem 0;
-      min-height: 200px;
-    }
-
-    .rainbow-trail {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 60%;
-      height: 60px;
-      background: linear-gradient(90deg, 
-        #ff0000 0%, #ff0000 14.28%,
-        #ff8c00 14.28%, #ff8c00 28.56%,
-        #ffd700 28.56%, #ffd700 42.84%,
-        #00ff00 42.84%, #00ff00 57.12%,
-        #0080ff 57.12%, #0080ff 71.4%,
-        #4b0082 71.4%, #4b0082 85.68%,
-        #9400d3 85.68%, #9400d3 100%);
-      border-radius: 30px;
-      animation: rainbowPulse 1s ease-in-out infinite alternate;
-      z-index: 1;
-    }
-
-    @keyframes rainbowPulse {
-      0% { opacity: 0.7; transform: translateY(-50%) scaleY(1); }
-      100% { opacity: 1; transform: translateY(-50%) scaleY(1.2); }
-    }
-
-    .nyan-cat {
-      width: 120px;
-      height: auto;
-      position: relative;
-      z-index: 2;
-      animation: nyanFloat 2s ease-in-out infinite;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    @keyframes nyanFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .august-info {
-      margin: 2rem 0;
-    }
-
-    .success-text {
-      font-size: clamp(1.2rem, 4vw, 1.8rem);
-      font-weight: bold;
-      margin-bottom: 1rem;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .date-text {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    }
-
-    .party-elements {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      pointer-events: none;
-    }
-
-    .star {
-      position: absolute;
-      font-size: 2rem;
-      animation: starTwinkle 2s ease-in-out infinite;
-    }
-
-    .star-1 {
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .star-2 {
-      top: 20%;
-      right: 15%;
-      animation-delay: 0.5s;
-    }
-
-    .star-3 {
-      bottom: 30%;
-      left: 20%;
-      animation-delay: 1s;
-    }
-
-    .star-4 {
-      bottom: 20%;
-      right: 10%;
-      animation-delay: 1.5s;
-    }
-
-    @keyframes starTwinkle {
-      0%, 100% { opacity: 0.3; transform: scale(1) rotate(0deg); }
-      50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .app-container {
-        padding: 0.5rem;
-      }
-
-      .status-container {
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-      }
-
-      .nyan-cat {
-        width: 100px;
-      }
-
-      .rainbow-trail {
-        height: 50px;
-      }
-
-      .star {
-        font-size: 1.5rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .nyan-cat {
-        width: 80px;
-      }
-
-      .rainbow-trail {
-        height: 40px;
-        width: 50%;
-      }
-
-      .star {
-        font-size: 1.2rem;
-      }
-    }
   `]
 })
 export class App implements OnInit, OnDestroy {
-  isAugust = false;
+  isMatchDay = false;
   currentDate = '';
-  currentMonth = '';
+  currentDay = '';
   private intervalId: any;
 
   ngOnInit() {
-    this.checkIfAugust();
-    // Comprobar cada segundo
+    this.checkMatchDay();
     this.intervalId = setInterval(() => {
-      this.checkIfAugust();
+      this.checkMatchDay();
     }, 1000);
   }
 
   ngOnDestroy() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+    clearInterval(this.intervalId);
   }
 
-  private checkIfAugust() {
+  private checkMatchDay() {
     const now = new Date();
-    const month = now.getMonth(); // 0-11, donde agosto es 7
-    
-    this.isAugust = month === 7;
-    
+    const day = now.getDay(); // domingo = 0, sábado = 6
+
+    this.isMatchDay = day === 0 || day === 6;
+
     this.currentDate = now.toLocaleDateString('es-ES', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
-    
-    this.currentMonth = now.toLocaleDateString('es-ES', { month: 'long' });
+
+    this.currentDay = now.toLocaleDateString('es-ES', { weekday: 'long' });
   }
 
   onImageError(event: any) {
-    // Fallback si no se puede cargar la imagen
-    event.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><rect width="200" height="100" fill="%23ff69b4"/><text x="100" y="50" text-anchor="middle" dy=".3em" font-family="Arial" font-size="20" fill="white">🐱‍🌈 NYAN</text></svg>';
+    event.target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Soccer_ball_animated.svg/1024px-Soccer_ball_animated.svg.png';
   }
 }
+
 
 bootstrapApplication(App);
