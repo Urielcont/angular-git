@@ -5,7 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build"
+    "build": "ng build",
+    "build:prod": "ng build --output-path=dist/angular-git --base-href=/angular-git/",
+    "deploy": "npm run build:prod && npx angular-cli-ghpages --dir=dist/angular-git"
   },
   "dependencies": {
     "@angular/animations": "^20.0.0",
